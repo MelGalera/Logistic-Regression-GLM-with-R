@@ -160,15 +160,15 @@ to NA.
 
 Univariate Plots
 
-<img src="LogReg_Diabetes_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+<img src="index_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
 ### Bivariate Distribution
 
-<img src="LogReg_Diabetes_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+<img src="index_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
 Correlation Plot
 
-<img src="LogReg_Diabetes_files/figure-gfm/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+<img src="index_files/figure-gfm/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
 ## Data preparation
 
@@ -210,7 +210,7 @@ Imputation using mean
     ##         
     ## 
 
-<img src="LogReg_Diabetes_files/figure-gfm/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /><img src="LogReg_Diabetes_files/figure-gfm/unnamed-chunk-9-2.png" style="display: block; margin: auto;" />
+<img src="index_files/figure-gfm/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /><img src="index_files/figure-gfm/unnamed-chunk-9-2.png" style="display: block; margin: auto;" />
 
 ## IV. Fitting and Evaluation of Linear Model
 
@@ -653,7 +653,7 @@ significant predictor (Model 2)
 
 ### Diagnostics
 
-<img src="LogReg_Diabetes_files/figure-gfm/unnamed-chunk-18-1.png" style="display: block; margin: auto;" />
+<img src="index_files/figure-gfm/unnamed-chunk-18-1.png" style="display: block; margin: auto;" />
 
 ### Just checking - excluding Insulin and skin thickness columns
 
@@ -1068,7 +1068,7 @@ Confusion Metrics
 
 Model 2: ROC Curve
 
-![](LogReg_Diabetes_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+![](index_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
 
     ## Area under the curve: 0.8115
 
@@ -1117,7 +1117,7 @@ Confusion Metrics
 
 Model 1: ROC Curve
 
-![](LogReg_Diabetes_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
+![](index_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
 
     ## Area under the curve: 0.7923
 
@@ -1166,7 +1166,7 @@ Confusion Metrics
 
 Model 01B: ROC Curve
 
-![](LogReg_Diabetes_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
+![](index_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
 
 Use test data
 
@@ -1211,4 +1211,4 @@ Confusion Metrics
 
 Model 02B: ROC Curve
 
-![](LogReg_Diabetes_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
+![](index_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
