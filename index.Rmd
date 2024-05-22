@@ -1,10 +1,10 @@
 ---
-title: "Logistic Regression in R - Diabetes"
+title: "Diabetes prediction using logistic regression analysis in R"
 author: "Melvin Galera"
 date: "2024-03-24"
 output: 
   github_document:
-    toc: true
+    toc: false
 ---
 
 ```{r setup, include=FALSE}
@@ -31,51 +31,59 @@ library(pROC)
 ```
 
 
-***
 
-## I. Overview
+### I. Project objective
 
-The dataset has 768 observations and 9 variables:
+Diabetes is a a serious chronic condition where there is too much glucose in the blood. Blood glucose is regulated by the hormone insulin. In such condition, the body cannot produce enough insulin or is not effectively using the insulin it makes. This can lead to excess sugar in the blood, which over time, can cause damage to blood vessels and nerves, and may result to many health complications. Early diagnosis leading to early and optimal self-management and treatment of diabetes is important to reduce risks of diabetes-related complications.
+
+In this regard, this project was aimed to develop a predictive model using regression analysis for classifying an outcome for a patient as with or without diabetes based on some diagnostic measurements. 
+
+<br>
+<br>
+
+### II. Exploratory Data Analysis 
+
+**A. Data Collection**
+
+The dataset used in this analysis was obtained from Kaggle which was originally from the National Institute of Diabetes and Digestive and Kidney Diseases. The dataset came from a larger database constrained to instances of patients being females, at least 21 years old and of Prima Indian heritage.  
+
+The dataset has 768 observations and 9 indicating patient diagnostic measurements (dependent variables) including the outcome if diabetic or not (target variable). The variables are:
 
   * `Pregnancies`               : number of pregnancies a woman has had, including live birth, miscarriage, or stillbirth
-  * `Glucose`                   : level of plasma glucose concentration
-  * `BloodPressure`             : blood pressure 
-  * `SkinThickness`             : thickness of skinfold
-  * `Insulin`                   : level of insulin
+  * `Glucose`                   : plasma glucose concentration from a 2-hour oral glucose tolerance test
+  * `BloodPressure`             : diastolic blood pressure (mm Hg) 
+  * `SkinThickness`             : triceps skinfold thickness (mm)
+  * `Insulin`                   : two-hour serum insulin (mu U/ml)
   * `BMI`                       : body mass index
   * `DiabetesPedigreeFunction`  : risk of developing type 2 diabetes
   * `Age`                       : age
-  * `Outcome`                   : diabetic patient or not
+  * `Outcome`                   : is the patient with diabetes or without (1- diabetic, 0- non-diabetic)
 
-  
-## II. Objective
+<br>
 
-The objective is to develop a predictive model (in terms of odds) for medical cost using GLM- logistic regression based on the given predictor variables.
+**B. Data Exploration**
 
-## III. Data 
+An initial look at the structure of the dataset (`diabetes_df`)shows:
 
-Initial look at the structure and content of `diabetes_df` dataset:
-
-```{r, echo=TRUE}
+```{r}
 str(diabetes_df)
+```
+The first 10 records of `diabetes_df`:
+
+```{r}
 diabetes_df %>% head(10)
 ```
-## III. Exploratory Analysis
+<br>
 
-To perform EDA on the dataset, we perform univariate distribution of the variables and the bivariate and multivariate relationships among the variables.
-
-### A. Univariate Analysis
-
-Summary statistics
+Summary statistics of the features:
 
 ```{r}
 summary(diabetes_df)
 ```
 
-Questionable values: Minimum value for glucose, BP, skin thickness, insulin and BMI is zero which is not realistic. 
-Change the zero values to NA.
+Most of the features are numerical. Though expressed as the binary (0, 1), the target variable `outcome` should be categorical. Moreover, the minimum value for glucose, blood pressure, skin thickness, insulin and BMI is zero which is not medically realistic. Hence, the zero values were replaces with NA's.
 
-```{r}
+```{r, echo=TRUE}
 diabetes_df2 <- diabetes_df %>% 
   mutate(Outcome = as.factor(Outcome)) %>% 
   mutate(Glucose = ifelse(Glucose == 0, NA, Glucose)) %>% 
@@ -83,85 +91,110 @@ diabetes_df2 <- diabetes_df %>%
   mutate(SkinThickness = ifelse(SkinThickness == 0, NA, SkinThickness)) %>%
   mutate(Insulin = ifelse(Insulin == 0, NA, Insulin)) %>%
   mutate(BMI = ifelse(BMI == 0, NA, BMI)) 
-
-# check for missing data
-colSums(is.na(diabetes_df2))
-summary(diabetes_df2)
-
 ```
 
-Univariate Plots
+Checking again the summary statistics:
 
-```{r, fig.align='center', fig.width=14, fig.height=10}
+```{r}
+summary(diabetes_df2)
+```
+<br>
+
+**Univariate plots**
+
+Univariate plots are shown below.  It can be observed that most of the distributions are skewed to the right, particularly for age, insulin, pregnancies and diabetes pedigree function.  Among the patients in the dataset, 268 patients (35%) have diabetes and 500 patients (65%) are without.
+
+```{r, fig.align='center', fig.width=15, fig.height=4}
 
 p1_age <- ggplot(data = diabetes_df2, aes(x = Age)) +
   geom_histogram(binwidth= 3, color = "cadetblue1", fill = "cyan4") +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Age",
        y = "Count",
        title = "Age distribution")
 
 p2_bp <- ggplot(data = diabetes_df2, aes(x = BloodPressure)) +
   geom_histogram(binwidth= 4.5, color = "cadetblue1", fill = "cyan4") +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Blood Pressure",
        y = "Count",
        title = "Blood pressure distribution")
 
 p3_bmi <- ggplot(data = diabetes_df2, aes(x = BMI)) +
   geom_histogram(binwidth= 3, color = "cadetblue1", fill = "cyan4") +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "BMI",
        y = "Count",
        title = "BMI distribution")
 
+ggarrange(p1_age, p2_bp, p3_bmi, ncol=3)
+```
+<br>
+
+```{r, fig.align='center', fig.width=15, fig.height=4}
 p4_dpf <- ggplot(data = diabetes_df2, aes(x = DiabetesPedigreeFunction)) +
   geom_histogram(binwidth= 0.1, color = "cadetblue1", fill = "cyan4") +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Diabetes Pedigree Function",
        y = "Count",
-       title = "Diabetes pedigree function distribution")
+       title = "Diabetes pedigree func distribution")
 
 p5_insulin <- ggplot(data = diabetes_df2, aes(x = Insulin)) +
   geom_histogram(binwidth= 40, color = "cadetblue1", fill = "cyan4") +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Insulin",
        y = "Count",
        title = "Insulin distribution")
 
 p6_glucose <- ggplot(data = diabetes_df2, aes(x = Glucose)) +
   geom_histogram(binwidth= 8, color = "cadetblue1", fill = "cyan4") +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Glucose",
        y = "Count",
        title = "Glucose distribution")
 
+ggarrange(p4_dpf, p5_insulin, p6_glucose, ncol=3)
+```
+<br>
+
+```{r, fig.align='center', fig.width=15, fig.height=4}
 p7_skinthickness <- ggplot(data = diabetes_df2, aes(x = SkinThickness)) +
   geom_histogram(binwidth= 5, color = "cadetblue1", fill = "cyan4") +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Skin Thickness",
        y = "Count",
        title = "Skin thickness distribution")
 
 p8_pregnancies <- ggplot(data = diabetes_df2, aes(x = Pregnancies)) +
   geom_histogram(binwidth= 1, color = "cadetblue1", fill = "cyan4") +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Pregnancies",
        y = "Count",
        title = "Pregnancies distribution")
 
 p9_outcome <- ggplot(data = diabetes_df2, aes(x = Outcome)) +
   geom_bar(width = 0.5, color = "cadetblue1", fill = "cyan4") +
-  scale_x_discrete(labels= c("Negative", "Positive")) +
+  scale_x_discrete(labels= c("0 - non-diabetic", "1 - diabetic")) +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Outcome",
        y = "Count",
        title = "Outcome distribution")
 
-ggarrange(p1_age, p2_bp, p3_bmi,p4_dpf, p5_insulin, p6_glucose,
-          p7_skinthickness, p8_pregnancies, p9_outcome, ncol=3, nrow=3)
+ggarrange(p7_skinthickness, p8_pregnancies, p9_outcome, ncol=3)
 ```
 
-### Bivariate Distribution
-
-```{r, fig.align='center', fig.width=14, fig.height=10}
+<br>
 
 
+**Density plots based on `Outcome`**
+
+The density plots of each predictor variable differentiating between diabetic and non-diabetic are shown below: 
+
+```{r, fig.align='center', fig.width=15, fig.height=4}
 p1_age_outcome <- ggplot(diabetes_df2, aes(x= Age, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
   scale_fill_manual(values = c("darkgoldenrod1", "cyan4")) +
-  #geom_vline(data = , aes(xintercept=grp.mean, color = Outcome), linetype = "dashed") +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   theme(legend.position = "none") +
   labs(x = "Age",
        title = "Age density distribution")
@@ -169,6 +202,7 @@ p1_age_outcome <- ggplot(diabetes_df2, aes(x= Age, y = after_stat(density), fill
 p2_bp_outcome <- ggplot(diabetes_df2, aes(x= BloodPressure, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
   scale_fill_manual(values = c("darkgoldenrod1", "cyan4")) +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   theme(legend.position = "none") +
   labs(x = "Blood Pressure",
        title = "Blood pressure density distribution")
@@ -176,13 +210,22 @@ p2_bp_outcome <- ggplot(diabetes_df2, aes(x= BloodPressure, y = after_stat(densi
 p3_bmi_outcome <- ggplot(diabetes_df2, aes(x= BMI, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
   scale_fill_manual(values = c("darkgoldenrod1", "cyan4")) +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   theme(legend.position = "none") +
   labs(x = "BMI",
        title = "BMI density distribution")
 
+ggarrange(p1_age_outcome, p2_bp_outcome, p3_bmi_outcome, ncol=3)
+
+```
+<br>
+
+```{r, fig.align='center', fig.width=15, fig.height=4}
+
 p4_dpf_outcome <- ggplot(diabetes_df2, aes(x= DiabetesPedigreeFunction, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
   scale_fill_manual(values = c("darkgoldenrod1", "cyan4")) +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   theme(legend.position = "none") +
   labs(x = "Diabetes Pedigree Function",
        title = "Diabetes pedigree function density distribution")
@@ -190,6 +233,7 @@ p4_dpf_outcome <- ggplot(diabetes_df2, aes(x= DiabetesPedigreeFunction, y = afte
 p5_insulin_outcome <- ggplot(diabetes_df2, aes(x= Insulin, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
   scale_fill_manual(values = c("darkgoldenrod1", "cyan4")) +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   theme(legend.position = "none") +
   labs(x = "Insulin",
        title = "Insulin density distribution")
@@ -197,48 +241,61 @@ p5_insulin_outcome <- ggplot(diabetes_df2, aes(x= Insulin, y = after_stat(densit
 p6_glucose_outcome <- ggplot(diabetes_df2, aes(x= Glucose, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
   scale_fill_manual(values = c("darkgoldenrod1", "cyan4")) +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   theme(legend.position = "none") +
   labs(x = "Glucose",
        title = "Glucose density distribution")
 
+
+ggarrange(p4_dpf_outcome, p5_insulin_outcome, p6_glucose_outcome, ncol=3)
+```
+<br>
+
+```{r, fig.align='center', fig.width=15, fig.height=4}
+
 p7_st_outcome <- ggplot(diabetes_df2, aes(x= SkinThickness, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
   scale_fill_manual(values = c("darkgoldenrod1", "cyan4")) +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   theme(legend.position = "none") +
   labs(x = "Skin Thickness",
        title = "Skin thickness density distribution")
 
 p8_pregnancies_outcome <- ggplot(diabetes_df2, aes(x= Pregnancies, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
-  scale_fill_manual(values = c("darkgoldenrod1", "cyan4"), labels= c("Negative", "Positive")) +
+  scale_fill_manual(values = c("darkgoldenrod1", "cyan4"), labels= c("0 - non-diabetic", "1 - diabetic")) +
+  theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16), 
+        legend.title = element_text(size = 15), legend.text = element_text(size = 15),) +
   labs(x = "Pregnancies",
        title = "Pregnancies density distribution")
 
-ggarrange(p1_age_outcome, p2_bp_outcome, p3_bmi_outcome,p4_dpf_outcome, p5_insulin_outcome, p6_glucose_outcome,
-          p7_st_outcome, p8_pregnancies_outcome, ncol=3, nrow=3)
+ggarrange(p7_st_outcome, p8_pregnancies_outcome, ncol=3, widths = c(1, 1.4, 0.6))
 
 ```
+<br>
 
-Correlation Plot
+**Correlation plot**
+
+The figure below shows the correlation among the numeric predictor variables which mostly are relatively positive. Among the variables which have quite strong correlation are: (a) skin thickness and BMI; (b) glucose and insulin; and (c) age and pregnancies (note that the dataset only includes women aged 21 and above).
+
+```{r, include=FALSE}
+diabetes_df2_num <- diabetes_df2 %>% dplyr::select(-Outcome)
+```
 
 ```{r, fig.align="center", fig.width= 8, fig.height = 5}
-model.matrix(~0+., data = diabetes_df2) %>% 
+model.matrix(~0+., data = diabetes_df2_num) %>% 
   cor(use = "pairwise.complete.obs") %>% 
-  ggcorrplot(show.diag = F, type = "lower", lab = TRUE, lab_size = 3, colors = c("darkgoldenrod2", "white","cyan4"),
+  ggcorrplot(show.diag = F, type = "lower", lab = TRUE, lab_size = 3.5, colors = c("darkgoldenrod2", "white","cyan4"),
              ggtheme= ggplot2::theme_gray, tl.cex = 10)
 
 ```
+<br>
 
-## Data preparation
+**C. Data pre-processing**
 
-```{r}
-# check for missing data
-colSums(is.na(diabetes_df2))
+Based on the summary statistics above, the dataset has a number of missing data, particularly on glucose, blood pressure, skin thickness, insulin and BMI. To address this, the missing data (zero values in the original `diabetes_df` dataset) were imputed with the mean value of the column. 
 
-```
-Imputation using mean
-
-```{r}
+```{r, echo=TRUE}
 diabetes_df3 <- diabetes_df %>% 
   mutate(Outcome = as.factor(Outcome)) %>% 
   mutate(Glucose = ifelse(Glucose == 0, mean(Glucose), Glucose)) %>% 
@@ -246,281 +303,166 @@ diabetes_df3 <- diabetes_df %>%
   mutate(SkinThickness = ifelse(SkinThickness == 0, mean(SkinThickness), SkinThickness)) %>%
   mutate(Insulin = ifelse(Insulin == 0, mean(SkinThickness), Insulin)) %>%
   mutate(BMI = ifelse(BMI == 0, mean(BMI), BMI)) 
+```
 
-# check for missing data
+```{r, include=FALSE}
 colSums(is.na(diabetes_df3))
-summary(diabetes_df3)
 ```
 
+<br>
+<br>
 
+### III. Evaluation of Logistic Regression Models
 
-```{r, fig.align='center', fig.width=6, fig.height=4}
-# map missing data
-diabetes_df_missmap <- missmap(diabetes_df2, col = c("goldenrod2", "cyan4"))
-diabetes_df_missmap <- missmap(diabetes_df3, col = c("goldenrod2", "cyan4"))
+**A. Splitting the dataset**
 
+The dataset was split into training data set (80%) and test data set. The training data set was used in building the logistic regression models and the test data set was used in evaluating the final model. 
 
-```
-
-
-## IV. Fitting and Evaluation of Linear Model
-
-### Splitting the dataset
-Split the dataset: 80% training data and 20% test data
-
-```{r}
+```{r, echo=TRUE}
 RNGkind(sample.kind = "Rounding")
-
 set.seed(100)
+
 train_index <-  sample(nrow(diabetes_df3), nrow(diabetes_df3)*0.8)
 
 training_data <- diabetes_df3[train_index, ]
 test_data <- diabetes_df3[-train_index, ]
-
-nrow(training_data)
-nrow(test_data)
-
 ```
 
-Model 1: Logistic regression model
+```{r, echo=TRUE}
+nrow(training_data)
+nrow(test_data)
+```
+
+<br>
+<br>
+
+**B. Logistic regression models**
+
+For this analysis, two models were evaluated:
+
+1. Model 1 - general model including all independent variables 
+2. Model 2 - stepwise model
+
+Model results are detailed below
+
+<br>
+
+**Model 1: General model including all independent variables**
+
+This model fits a logistic regression model that relates all 8 independent variables with the target `Outcome` variable.
 
 ```{r, echo=TRUE}
 diabetes_logmod_01 <- glm(Outcome~ Age + BloodPressure + BMI + 
                        DiabetesPedigreeFunction + Insulin + Glucose + SkinThickness + Pregnancies, 
                        family = binomial(link = 'logit'), data = training_data)
 
-```
-
-```{r}
 summary(diabetes_logmod_01)
 ```
+<br>
 
+The results can also be presented in terms of odds ratios as in below table:
 
 ```{r}
 # model summary
 sjPlot::tab_model(diabetes_logmod_01, show.r2 = FALSE)
 ```
 
-B. Improving the model
+<br>
 
-Model 2 - Check for non-linear association with outcome and age
+**Model 2 - stepwise model**
+
+This model automatically selects a reduced number of (relevant) predictor variables for building the logistic regression model.
 
 ```{r, echo=TRUE}
-diabetes_logmod_02 <- glm(Outcome~ Age +  I(Age^2) + BloodPressure + BMI + 
-                       DiabetesPedigreeFunction + Insulin + Glucose + SkinThickness + Pregnancies, 
-                       family = binomial(link = 'logit'), data = training_data)
+diabetes_logmod_02 <- step(diabetes_logmod_01, direction = "backward", trace = 0)
 
-```
-
-```{r}
 summary(diabetes_logmod_02)
 ```
 
+<br>
+
+Similarly, the results can also be presented in terms of odds ratios as in below table:
 
 ```{r}
 # model summary
 sjPlot::tab_model(diabetes_logmod_02, show.r2 = FALSE)
 ```
 
-COMPARISON OF MODEL 1 and MODEL 2 by analysis of deviance table
+<br>
 
-```{r, echo=TRUE}
-# compare model 1 and model 2
-anova(diabetes_logmod_01, diabetes_logmod_02, test = "Chi")
-```
-Results: additional DF of 1 and a low p-value which means age2 is a significant predictor
-(Model 2)
 
-### Diagnostics
+**C. Comparing the models**
 
-```{r, fig.align='center', fig.width = 8, fig.height=4}
+In terms of the residual deviance, Model 1 and Model 2 do not differ much. However, Model 2 has slightly lower AIC (558.94) compared to Model 1 (564.67) which makes Model 2 the better-fit model. Moreover, looking at the odds ratio tables, the variables which were excluded in Model 2 have odd ratios of 1.0 and high p-value (>0.05) meaning no association between these variables (age, blood pressure, skin thickness) and the outcome variable. Also, these variables were identified in the correlation plot as having quite strong correlations with the other variables (age, BMI). Excluding them in the model lessens multicollinearity or possibility of it which is better for a regression model.  
+
+```{r, include= FALSE, fig.align='center', fig.width = 8, fig.height=4}
+# diagnostics - residual plots
 arm::binnedplot(predict(diabetes_logmod_02, type = "response"), residuals(diabetes_logmod_02, type = "response"))
 ```
 
-### Just checking - excluding Insulin and skin thickness columns
-Model 1B: Logistic regression model
-
-```{r, echo=TRUE}
-diabetes_logmod_01B <- glm(Outcome~ Age + BloodPressure + BMI + 
-                       DiabetesPedigreeFunction + Glucose + Pregnancies, 
-                       family = binomial(link = 'logit'), data = training_data)
-
-```
-
-```{r}
-summary(diabetes_logmod_01B)
-```
+<br>
 
 
+**D. Predicting from test data**
 
-```{r}
-# model summary
-sjPlot::tab_model(diabetes_logmod_01B, show.r2 = FALSE)
-```
+The performance of Model 2 on new data was evaluated using the test data. Predicted values for `Outcome` were obtained as below:
 
-B. Improving the model
-
-Model 2B - Check for non-linear association with outcome and age
-
-```{r, echo=TRUE}
-diabetes_logmod_02B <- glm(Outcome~ Age +  I(Age^2) + BloodPressure + BMI + 
-                       DiabetesPedigreeFunction + Glucose + Pregnancies, 
-                       family = binomial(link = 'logit'), data = training_data)
-
-```
-
-```{r}
-summary(diabetes_logmod_02B)
-```
-
-
-```{r}
-# model summary
-sjPlot::tab_model(diabetes_logmod_02B, show.r2 = FALSE)
-```
-
-COMPARISON OF MODEL 1B and MODEL 2B by analysis of deviance table
-
-```{r, echo=TRUE}
-# compare model 1 and model 2
-anova(diabetes_logmod_01B, diabetes_logmod_02B, test = "Chi")
-```
-
-
-### ROC Curve and AUC
-
-
-
-Use test data
 ```{r, echo=TRUE}
 test_data$prediction <- predict(diabetes_logmod_02, newdata = test_data, type = "response")
-
 test_data$pred_diabetic <- ifelse(test = test_data$prediction > 0.5, yes = "1", no = "0")
-
 test_data <- test_data %>% 
   mutate(pred_diabetic = as.factor(pred_diabetic))
-
 ```
 
-Confusion Metrics
+<br>
+
+**Confusion Matrix**
+
+A confusion matrix with the predicted and known `Outcome` values of the test data set is presented below, showing an accuracy of 0.74.
 
 ```{r}
-confusionMatrix(data = test_data$pred_diabetic,
+cf <- confusionMatrix(data = test_data$pred_diabetic,
                 reference = test_data$Outcome,
                 positive = "1")
+
+cf
 ```
 
-Model 2: ROC Curve
+```{r, fig.align='center', fig.width=4, fig.height= 4}
+fourfoldplot(as.table(cf), color = c("cyan4", "goldenrod2"),main = "Confusion Matrix")
+```
+<br>
 
-```{r}
+**ROC Curve and AUC**
+
+The ROC (receiver operating characteristic) curve plots the sensitivity and specificity of a model. The ROC curve for Model 2 is shown below. It also indicates the AUC (area under the curve) which evaluates how well this logistic regression model classifies the `Outcomes` outcomes based on the set cutoff (0.5). A high AUC means the model is better at predicting non-diabetic (0 classes as 0) and diabetic (1 classes as 1). Model 2 resulted to a moderately good AUC of 0.788.
+
+```{r, fig.align='center', fig.width=5, fig.height= 5}
 pROC::plot.roc(test_data$Outcome, as.numeric(test_data$prediction), print.auc = TRUE)
-
 ```
 
 ```{r}
 pROC::auc(test_data$Outcome, as.numeric(test_data$prediction))
 ```
 
+<br>
+<br>
 
-### Check Model 1 results
+### IV. Conclusion
 
+In this project, a logistic regression model was developed to predict if a patient is diabetic or not. Among the two models evaluated, Model 2 which included reduced predictor variables has the better fit in classifying the `Outcome`. 
 
-Use test data
-```{r, echo=TRUE}
-test_data$prediction_mod01 <- predict(diabetes_logmod_01, newdata = test_data, type = "response")
+From Model 2 results, holding other variables at fixed value: (a) a unit increase in glucose concentration increases the odds of the patient being diabetic by 4%; (b) a new pregnancy increases the odds of the patient being diabetic by 15%; (c) an increase in BMI increases the odds of a patient being diabetic by 10%; and a unit increase in the diabetes pedigree function score increases the odds of a patient being diabetic by a factor of 4.14 (or 4 times). Insulin has an odds ration of 1.0 which means no association with the outcome.
 
-test_data$pred_diabetic_mod01 <- ifelse(test = test_data$prediction_mod01 > 0.5, yes = "1", no = "0")
-
-test_data <- test_data %>% 
-  mutate(pred_diabetic_mod01 = as.factor(pred_diabetic_mod01))
-
-```
-
-Confusion Metrics
-
-```{r}
-confusionMatrix(data = test_data$pred_diabetic_mod01,
-                reference = test_data$Outcome,
-                positive = "1")
-```
-
-
-
-Model 1: ROC Curve
-
-```{r}
-pROC::plot.roc(test_data$Outcome, as.numeric(test_data$prediction_mod01), print.auc = TRUE)
-
-```
-
-```{r}
-pROC::auc(test_data$Outcome, as.numeric(test_data$prediction_mod01))
-```
+Based on the obtained AUC, the model has 79%% chance of distinguishing a patient as diabetic (1 class) or not (0 class). The dataset seemed not large enough and hence, additional observations (data) might improve the model. 
 
 
 
 
 
 
-### ROC Curve and AUC for Model 01B and 02B
-
-
-
-Use test data
-```{r, echo=TRUE}
-test_data$prediction_01B <- predict(diabetes_logmod_01B, newdata = test_data, type = "response")
-
-test_data$pred_diabetic_01B <- ifelse(test = test_data$prediction_01B > 0.5, yes = "1", no = "0")
-
-test_data <- test_data %>% 
-  mutate(pred_diabetic_01B = as.factor(pred_diabetic_01B))
-
-```
-
-Confusion Metrics
-
-```{r}
-confusionMatrix(data = test_data$pred_diabetic_01B,
-                reference = test_data$Outcome,
-                positive = "1")
-```
-
-
-Model 01B: ROC Curve
-
-```{r}
-pROC::plot.roc(test_data$Outcome, as.numeric(test_data$prediction_01B), print.auc = TRUE)
-
-```
 
 
 
 
 
-Use test data
-```{r, echo=TRUE}
-test_data$prediction_02B <- predict(diabetes_logmod_02B, newdata = test_data, type = "response")
-
-test_data$pred_diabetic_02B <- ifelse(test = test_data$prediction_02B > 0.5, yes = "1", no = "0")
-
-test_data <- test_data %>% 
-  mutate(pred_diabetic_02B = as.factor(pred_diabetic_02B))
-
-```
-
-Confusion Metrics
-
-```{r}
-confusionMatrix(data = test_data$pred_diabetic_02B,
-                reference = test_data$Outcome,
-                positive = "1")
-```
-
-
-
-Model 02B: ROC Curve
-
-```{r}
-pROC::plot.roc(test_data$Outcome, as.numeric(test_data$prediction_02B), print.auc = TRUE)
-
-```
