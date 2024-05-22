@@ -1,4 +1,4 @@
-Diabetes prediction using logistic regression analysis in R
+Diabetes prediction using regression analysis in R
 ================
 Melvin Galera
 2024-03-24
