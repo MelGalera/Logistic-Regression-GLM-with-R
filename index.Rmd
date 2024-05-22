@@ -1,5 +1,5 @@
 ---
-title: "Diabetes prediction using logistic regression analysis in R"
+title: "Diabetes prediction using regression analysis in R"
 author: "Melvin Galera"
 date: "2024-03-24"
 output: 
