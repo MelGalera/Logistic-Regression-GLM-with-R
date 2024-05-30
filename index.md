@@ -7,14 +7,14 @@ Melvin Galera
 
 ### I. Project objective
 
-Diabetes is a a serious chronic condition where there is too much
-glucose in the blood. Blood glucose is regulated by the hormone insulin.
-In such condition, the body cannot produce enough insulin or is not
-effectively using the insulin it makes. This can lead to excess sugar in
-the blood, which over time, can cause damage to blood vessels and
-nerves, and may result to many health complications. Early diagnosis
-leading to early and optimal self-management and treatment of diabetes
-is important to reduce risks of diabetes-related complications.
+Diabetes is a serious chronic condition where there is too much glucose
+in the blood. Blood glucose is regulated by the hormone insulin. In such
+condition, the body cannot produce enough insulin or is not effectively
+using the insulin it makes. This can lead to excess sugar in the blood,
+which over time, can cause damage to blood vessels and nerves, and may
+result to many health complications. Early diagnosis leading to early
+and optimal self-management and treatment of diabetes is important to
+reduce risks of diabetes-related complications.
 
 In this regard, this project was aimed to develop a predictive model
 using regression analysis for classifying an outcome for a patient as
