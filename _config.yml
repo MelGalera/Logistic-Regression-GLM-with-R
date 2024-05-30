@@ -3,3 +3,7 @@ description: Melvin Galera
 theme: jekyll-theme-cayman
 github:
   repository_url: https://github.com/MelGalera/Logistic-Regression-GLM-with-R/blob/main/index.md
+titles_from_headings:
+  enabled: true
+  strip_title: true
+  collections: true
