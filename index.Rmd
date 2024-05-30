@@ -30,7 +30,7 @@ library(pROC)
 
 ```
 
-
+<br>
 
 ### I. Project objective
 
@@ -38,7 +38,6 @@ Diabetes is a a serious chronic condition where there is too much glucose in the
 
 In this regard, this project was aimed to develop a predictive model using regression analysis for classifying an outcome for a patient as with or without diabetes based on some diagnostic measurements. 
 
-<br>
 <br>
 
 ### II. Exploratory Data Analysis 

@@ -3,6 +3,8 @@ Diabetes prediction using regression analysis in R
 Melvin Galera
 2024-03-24
 
+<br>
+
 ### I. Project objective
 
 Diabetes is a a serious chronic condition where there is too much
@@ -18,7 +20,7 @@ In this regard, this project was aimed to develop a predictive model
 using regression analysis for classifying an outcome for a patient as
 with or without diabetes based on some diagnostic measurements.
 
-<br> <br>
+<br>
 
 ### II. Exploratory Data Analysis
 
