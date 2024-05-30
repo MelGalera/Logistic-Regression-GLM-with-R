@@ -1,3 +1,5 @@
 title: Diabetes prediction using regression analysis in R
 #description: Melvin Galera
 theme: jekyll-theme-cayman
+github:
+  repository_url: https://github.com/MelGalera/Logistic-Regression-GLM-with-R/blob/main/index.md
