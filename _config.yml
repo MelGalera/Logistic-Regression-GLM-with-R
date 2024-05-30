@@ -6,6 +6,4 @@ github:
 titles_from_headings:
   enabled: true
   strip_title: true
-  strip_author: true
-  strip_date: true
   collections: true

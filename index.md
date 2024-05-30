@@ -1,7 +1,5 @@
 Diabetes prediction using regression analysis in R
 ================
-Melvin Galera
-24-03-2024
 
 <br>
 
