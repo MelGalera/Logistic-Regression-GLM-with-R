@@ -106,21 +106,21 @@ Univariate plots are shown below.  It can be observed that most of the distribut
 ```{r, fig.align='center', fig.width=15, fig.height=4}
 
 p1_age <- ggplot(data = diabetes_df2, aes(x = Age)) +
-  geom_histogram(binwidth= 3, color = "cadetblue1", fill = "cyan4") +
+  geom_histogram(binwidth= 3, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Age",
        y = "Count",
        title = "Age distribution")
 
 p2_bp <- ggplot(data = diabetes_df2, aes(x = BloodPressure)) +
-  geom_histogram(binwidth= 4.5, color = "cadetblue1", fill = "cyan4") +
+  geom_histogram(binwidth= 4.5, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Blood Pressure",
        y = "Count",
        title = "Blood pressure distribution")
 
 p3_bmi <- ggplot(data = diabetes_df2, aes(x = BMI)) +
-  geom_histogram(binwidth= 3, color = "cadetblue1", fill = "cyan4") +
+  geom_histogram(binwidth= 3, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "BMI",
        y = "Count",
@@ -132,21 +132,21 @@ ggarrange(p1_age, p2_bp, p3_bmi, ncol=3)
 
 ```{r, fig.align='center', fig.width=15, fig.height=4}
 p4_dpf <- ggplot(data = diabetes_df2, aes(x = DiabetesPedigreeFunction)) +
-  geom_histogram(binwidth= 0.1, color = "cadetblue1", fill = "cyan4") +
+  geom_histogram(binwidth= 0.1, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Diabetes Pedigree Function",
        y = "Count",
        title = "Diabetes pedigree func distribution")
 
 p5_insulin <- ggplot(data = diabetes_df2, aes(x = Insulin)) +
-  geom_histogram(binwidth= 40, color = "cadetblue1", fill = "cyan4") +
+  geom_histogram(binwidth= 40, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Insulin",
        y = "Count",
        title = "Insulin distribution")
 
 p6_glucose <- ggplot(data = diabetes_df2, aes(x = Glucose)) +
-  geom_histogram(binwidth= 8, color = "cadetblue1", fill = "cyan4") +
+  geom_histogram(binwidth= 8, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Glucose",
        y = "Count",
@@ -158,21 +158,21 @@ ggarrange(p4_dpf, p5_insulin, p6_glucose, ncol=3)
 
 ```{r, fig.align='center', fig.width=15, fig.height=4}
 p7_skinthickness <- ggplot(data = diabetes_df2, aes(x = SkinThickness)) +
-  geom_histogram(binwidth= 5, color = "cadetblue1", fill = "cyan4") +
+  geom_histogram(binwidth= 5, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Skin Thickness",
        y = "Count",
        title = "Skin thickness distribution")
 
 p8_pregnancies <- ggplot(data = diabetes_df2, aes(x = Pregnancies)) +
-  geom_histogram(binwidth= 1, color = "cadetblue1", fill = "cyan4") +
+  geom_histogram(binwidth= 1, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Pregnancies",
        y = "Count",
        title = "Pregnancies distribution")
 
 p9_outcome <- ggplot(data = diabetes_df2, aes(x = Outcome)) +
-  geom_bar(width = 0.5, color = "cadetblue1", fill = "cyan4") +
+  geom_bar(width = 0.5, color = "dodgerblue1", fill = "dodgerblue3") +
   scale_x_discrete(labels= c("0 - non-diabetic", "1 - diabetic")) +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Outcome",
@@ -192,7 +192,7 @@ The density plots of each predictor variable differentiating between diabetic an
 ```{r, fig.align='center', fig.width=15, fig.height=4}
 p1_age_outcome <- ggplot(diabetes_df2, aes(x= Age, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
-  scale_fill_manual(values = c("darkgoldenrod1", "cyan4")) +
+  scale_fill_manual(values = c("darkgoldenrod1", "dodgerblue3")) +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   theme(legend.position = "none") +
   labs(x = "Age",
@@ -200,7 +200,7 @@ p1_age_outcome <- ggplot(diabetes_df2, aes(x= Age, y = after_stat(density), fill
 
 p2_bp_outcome <- ggplot(diabetes_df2, aes(x= BloodPressure, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
-  scale_fill_manual(values = c("darkgoldenrod1", "cyan4")) +
+  scale_fill_manual(values = c("darkgoldenrod1", "dodgerblue3")) +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   theme(legend.position = "none") +
   labs(x = "Blood Pressure",
@@ -208,7 +208,7 @@ p2_bp_outcome <- ggplot(diabetes_df2, aes(x= BloodPressure, y = after_stat(densi
 
 p3_bmi_outcome <- ggplot(diabetes_df2, aes(x= BMI, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
-  scale_fill_manual(values = c("darkgoldenrod1", "cyan4")) +
+  scale_fill_manual(values = c("darkgoldenrod1", "dodgerblue3")) +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   theme(legend.position = "none") +
   labs(x = "BMI",
@@ -223,7 +223,7 @@ ggarrange(p1_age_outcome, p2_bp_outcome, p3_bmi_outcome, ncol=3)
 
 p4_dpf_outcome <- ggplot(diabetes_df2, aes(x= DiabetesPedigreeFunction, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
-  scale_fill_manual(values = c("darkgoldenrod1", "cyan4")) +
+  scale_fill_manual(values = c("darkgoldenrod1", "dodgerblue3")) +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   theme(legend.position = "none") +
   labs(x = "Diabetes Pedigree Function",
@@ -231,7 +231,7 @@ p4_dpf_outcome <- ggplot(diabetes_df2, aes(x= DiabetesPedigreeFunction, y = afte
 
 p5_insulin_outcome <- ggplot(diabetes_df2, aes(x= Insulin, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
-  scale_fill_manual(values = c("darkgoldenrod1", "cyan4")) +
+  scale_fill_manual(values = c("darkgoldenrod1", "dodgerblue3")) +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   theme(legend.position = "none") +
   labs(x = "Insulin",
@@ -239,7 +239,7 @@ p5_insulin_outcome <- ggplot(diabetes_df2, aes(x= Insulin, y = after_stat(densit
 
 p6_glucose_outcome <- ggplot(diabetes_df2, aes(x= Glucose, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
-  scale_fill_manual(values = c("darkgoldenrod1", "cyan4")) +
+  scale_fill_manual(values = c("darkgoldenrod1", "dodgerblue3")) +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   theme(legend.position = "none") +
   labs(x = "Glucose",
@@ -254,7 +254,7 @@ ggarrange(p4_dpf_outcome, p5_insulin_outcome, p6_glucose_outcome, ncol=3)
 
 p7_st_outcome <- ggplot(diabetes_df2, aes(x= SkinThickness, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
-  scale_fill_manual(values = c("darkgoldenrod1", "cyan4")) +
+  scale_fill_manual(values = c("darkgoldenrod1", "dodgerblue3")) +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   theme(legend.position = "none") +
   labs(x = "Skin Thickness",
@@ -262,7 +262,7 @@ p7_st_outcome <- ggplot(diabetes_df2, aes(x= SkinThickness, y = after_stat(densi
 
 p8_pregnancies_outcome <- ggplot(diabetes_df2, aes(x= Pregnancies, y = after_stat(density), fill = Outcome)) +
   geom_density(alpha=0.8, na.rm = TRUE) +
-  scale_fill_manual(values = c("darkgoldenrod1", "cyan4"), labels= c("0 - non-diabetic", "1 - diabetic")) +
+  scale_fill_manual(values = c("darkgoldenrod1", "dodgerblue3"), labels= c("0 - non-diabetic", "1 - diabetic")) +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16), 
         legend.title = element_text(size = 15), legend.text = element_text(size = 15),) +
   labs(x = "Pregnancies",
@@ -284,7 +284,7 @@ diabetes_df2_num <- diabetes_df2 %>% dplyr::select(-Outcome)
 ```{r, fig.align="center", fig.width= 8, fig.height = 5}
 model.matrix(~0+., data = diabetes_df2_num) %>% 
   cor(use = "pairwise.complete.obs") %>% 
-  ggcorrplot(show.diag = F, type = "lower", lab = TRUE, lab_size = 3.5, colors = c("darkgoldenrod2", "white","cyan4"),
+  ggcorrplot(show.diag = F, type = "lower", lab = TRUE, lab_size = 3.5, colors = c("darkgoldenrod2", "white","dodgerblue3"),
              ggtheme= ggplot2::theme_gray, tl.cex = 10)
 
 ```
@@ -428,7 +428,7 @@ cf
 ```
 
 ```{r, fig.align='center', fig.width=4, fig.height= 4}
-fourfoldplot(as.table(cf), color = c("cyan4", "goldenrod2"),main = "Confusion Matrix")
+fourfoldplot(as.table(cf), color = c("dodgerblue3", "goldenrod2"),main = "Confusion Matrix")
 ```
 <br>
 
