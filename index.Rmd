@@ -106,21 +106,21 @@ Univariate plots are shown below.  It can be observed that most of the distribut
 ```{r, fig.align='center', fig.width=15, fig.height=4}
 
 p1_age <- ggplot(data = diabetes_df2, aes(x = Age)) +
-  geom_histogram(binwidth= 3, color = "dodgerblue1", fill = "dodgerblue3") +
+  geom_histogram(binwidth= 5, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Age",
        y = "Count",
        title = "Age distribution")
 
 p2_bp <- ggplot(data = diabetes_df2, aes(x = BloodPressure)) +
-  geom_histogram(binwidth= 4.5, color = "dodgerblue1", fill = "dodgerblue3") +
+  geom_histogram(binwidth= 7, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Blood Pressure",
        y = "Count",
        title = "Blood pressure distribution")
 
 p3_bmi <- ggplot(data = diabetes_df2, aes(x = BMI)) +
-  geom_histogram(binwidth= 3, color = "dodgerblue1", fill = "dodgerblue3") +
+  geom_histogram(binwidth= 4, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "BMI",
        y = "Count",
@@ -132,21 +132,21 @@ ggarrange(p1_age, p2_bp, p3_bmi, ncol=3)
 
 ```{r, fig.align='center', fig.width=15, fig.height=4}
 p4_dpf <- ggplot(data = diabetes_df2, aes(x = DiabetesPedigreeFunction)) +
-  geom_histogram(binwidth= 0.1, color = "dodgerblue1", fill = "dodgerblue3") +
+  geom_histogram(binwidth= 0.2, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Diabetes Pedigree Function",
        y = "Count",
        title = "Diabetes pedigree func distribution")
 
 p5_insulin <- ggplot(data = diabetes_df2, aes(x = Insulin)) +
-  geom_histogram(binwidth= 40, color = "dodgerblue1", fill = "dodgerblue3") +
+  geom_histogram(binwidth=60, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Insulin",
        y = "Count",
        title = "Insulin distribution")
 
 p6_glucose <- ggplot(data = diabetes_df2, aes(x = Glucose)) +
-  geom_histogram(binwidth= 8, color = "dodgerblue1", fill = "dodgerblue3") +
+  geom_histogram(binwidth= 12, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Glucose",
        y = "Count",
@@ -158,7 +158,7 @@ ggarrange(p4_dpf, p5_insulin, p6_glucose, ncol=3)
 
 ```{r, fig.align='center', fig.width=15, fig.height=4}
 p7_skinthickness <- ggplot(data = diabetes_df2, aes(x = SkinThickness)) +
-  geom_histogram(binwidth= 5, color = "dodgerblue1", fill = "dodgerblue3") +
+  geom_histogram(binwidth= 6, color = "dodgerblue1", fill = "dodgerblue3") +
   theme(plot.title = element_text(size = 15), axis.title = element_text(size = 16), axis.text = element_text(size = 16)) +
   labs(x = "Skin Thickness",
        y = "Count",
