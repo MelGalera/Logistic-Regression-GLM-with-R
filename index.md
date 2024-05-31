@@ -735,3 +735,5 @@ Based on the obtained AUC, the model has 79%% chance of distinguishing a
 patient as diabetic (1 class) or not (0 class). The dataset seemed not
 large enough and hence, additional observations (data) might improve the
 model.
+
+<br> <br> <br>
