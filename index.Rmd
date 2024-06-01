@@ -350,6 +350,10 @@ Model results are detailed below
 
 This model fits a logistic regression model that relates all 8 independent variables with the target `Outcome` variable.
 
+<div align = 'center'>P(Outcome = 1) = $\beta_0$ + $\beta_1$Age + $\beta_2$BloodPressure + $\beta_3$BMI + $\beta_4$DiabetesPedigreeFunction + $\beta_5$Insulin + $\beta_6$Glucose + $\beta_7$SkinThickness + $\beta_8$Pregnancies + $\epsilon$</div>
+
+<br>
+
 ```{r, echo=TRUE}
 diabetes_logmod_01 <- glm(Outcome~ Age + BloodPressure + BMI + 
                        DiabetesPedigreeFunction + Insulin + Glucose + SkinThickness + Pregnancies, 
