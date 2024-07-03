@@ -5,16 +5,16 @@ Diabetes prediction using regression analysis in R
 
 ### I. Project objective
 
-Diabetes is a serious chronic condition where there is too much glucose
-in the blood. Blood glucose is regulated by the hormone insulin. In such
-condition, the body cannot produce enough insulin or is not effectively
-using the insulin it makes. This can lead to excess sugar in the blood,
-which over time, can cause damage to blood vessels and nerves, and may
-result to many health complications. Early diagnosis leading to early
-and optimal self-management and treatment of diabetes is important to
-reduce risks of diabetes-related complications.
+Blood glucose is regulated by the hormone insulin. When the body cannot
+produce enough insulin or is not effectively using the insulin it makes,
+there can be too much glucose in the blood which can result to a serious
+chronic condition called diabetes. Over time, the excess sugar in the
+blood could cause damage to blood vessels and nerves, and may result to
+many health complications. Early diagnosis leading to early and optimal
+self-management and treatment of diabetes is important to reduce such
+risks of diabetes-related complications.
 
-In this regard, this project was aimed to develop a predictive model
+In this regard, this project was aimed at developing a predictive model
 using regression analysis for classifying an outcome for a patient as
 with or without diabetes based on some diagnostic measurements.
 
@@ -24,15 +24,15 @@ with or without diabetes based on some diagnostic measurements.
 
 **A. Data Collection**
 
-The dataset used in this analysis was obtained from Kaggle which was
+The dataset used in this analysis was obtained from Kaggle and which was
 originally from the National Institute of Diabetes and Digestive and
 Kidney Diseases. The dataset came from a larger database constrained to
 instances of patients being females, at least 21 years old and of Prima
 Indian heritage.
 
-The dataset has 768 observations and 9 indicating patient diagnostic
-measurements (dependent variables) including the outcome if diabetic or
-not (target variable). The variables are:
+The dataset has 768 observations and 9 variables indicating patient
+diagnostic measurements including the outcome if diabetic or not (target
+variable). The variables are:
 
 - `Pregnancies` : number of pregnancies a woman has had, including live
   birth, miscarriage, or stillbirth
@@ -655,8 +655,8 @@ between these variables (age, blood pressure, skin thickness) and the
 outcome variable. Also, these variables were identified in the
 correlation plot as having quite strong correlations with the other
 variables (age, BMI). Excluding them in the model lessens
-multicollinearity or possibility of it which is better for a regression
-model.
+multicollinearity (or possibility of it) which is better for a
+regression model.
 
 <br>
 
@@ -730,8 +730,8 @@ Model 2 resulted to a moderately good AUC of 0.788.
 
 In this project, a logistic regression model was developed to predict if
 a patient is diabetic or not. Among the two models evaluated, Model 2
-which included reduced predictor variables has the better fit in
-classifying the `Outcome`.
+with reduced predictor variables has the better fit in classifying the
+`Outcome`.
 
 From Model 2 results, holding other variables at fixed value: (a) a unit
 increase in glucose concentration increases the odds of the patient
