@@ -726,7 +726,7 @@ Model 2 resulted to a moderately good AUC of 0.788.
 
 <br> <br>
 
-### IV. Conclusion
+### IV. Insights
 
 In this project, a logistic regression model was developed to predict if
 a patient is diabetic or not. Among the two models evaluated, Model 2

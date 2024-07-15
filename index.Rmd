@@ -451,7 +451,7 @@ pROC::auc(test_data$Outcome, as.numeric(test_data$prediction))
 <br>
 <br>
 
-### IV. Conclusion
+### IV. Insights
 
 In this project, a logistic regression model was developed to predict if a patient is diabetic or not. Among the two models evaluated, Model 2 with reduced predictor variables has the better fit in classifying the `Outcome`. 
 
